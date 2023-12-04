@@ -4,9 +4,8 @@ import json
 from typing import Type, Optional
 from pydantic import BaseModel, Field
 from superagi.tools.base_tool import BaseTool
-from .helper.webex_helper import WebexHelper
+from helper.webex_helper import WebexHelper
 from wxc_sdk import WebexSimpleApi
-import wxc_sdk as wbx
 
 
 class WebexFetchMeetingsSchema(BaseModel):
