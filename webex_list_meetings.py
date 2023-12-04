@@ -36,11 +36,11 @@ class WebexHelper:
 class WebexFetchMeetingsSchema(BaseModel):
     startDate: str = Field(
         ...,
-        description="start date",
+        description="start date to list the webex meetings in iso8601 format",
     )
     endDate: str = Field(
         ...,
-        description="end date",
+        description="end date to list the webex meetings in iso8601 format",
     )
 
 class WebexFetchMeetingsTool(BaseTool):
@@ -66,8 +66,8 @@ class WebexFetchMeetingsTool(BaseTool):
         Execute the Webex fetch meetings tool.
 
         Args:
-            startDate: The start date in iso8601 format.
-            startDate: The end date in iso8601 format.
+            startDate: The start date of list of webex meetings in iso8601 format.
+            endDate: The end date of list of webex meetings in iso8601 format.
 
         Returns:
             Meetings fetched successfully. or No meetings found. or error message.
@@ -76,8 +76,12 @@ class WebexFetchMeetingsTool(BaseTool):
             webex_token=self.get_tool_config("WEBEX_TOKEN")
             webex_helper=WebexHelper(webex_token)
             api = WebexSimpleApi(tokens=webex_token)
-            startDate = self.args.startDate or "2023-12-04T00:00:00Z"
-            endDate = self.args.endDate or "2023-12-06T00:00:00Z"
+            startDate = "2023-12-04T00:00:00Z"
+            endDate = "2023-12-06T00:00:00Z"
+            if self.args.startDate:
+                startDate = self.args.startDate
+            if self.args.endDate:
+                endDate = self.args.endDate
             lazy_meetings = api.meetings.list(_start=startDate, _end=endDate)
             meetings = [meeting.json() for meeting in lazy_meetings]
             api.meetings.create()
