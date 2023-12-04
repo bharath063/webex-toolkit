@@ -1,6 +1,4 @@
 import pytest
-import requests
-import json
 from unittest.mock import patch
 from ..helper.webex_helper import WebexHelper
 
