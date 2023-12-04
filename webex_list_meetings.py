@@ -76,7 +76,10 @@ class WebexFetchMeetingsTool(BaseTool):
             webex_token=self.get_tool_config("WEBEX_TOKEN")
             webex_helper=WebexHelper(webex_token)
             api = WebexSimpleApi(tokens=webex_token)
-            meetings = [meeting.json() for meeting in api.meetings.list(_start=self.args.startDate, _end=self.args.endDate)]
+            startDate = self.args.startDate or "2023-12-04T00:00:00Z"
+            endDate = self.args.endDate or "2023-12-06T00:00:00Z"
+            lazy_meetings = api.meetings.list(_start=startDate, _end=endDate)
+            meetings = [meeting.json() for meeting in lazy_meetings]
             api.meetings.create()
             if len(meetings)==0:
                 return "No meetings found."
